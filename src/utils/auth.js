@@ -45,19 +45,6 @@ export const authorize = (data) => {
         .catch((err) => console.log(err));
 }
 
-// export const getContent = (token) => {
-//     return fetch(`${BASE_URL}/users/me`, {
-//         method: 'GET',
-//         headers: {
-//             "Content-Type": "application/json",
-//             "Authorization" : `Bearer ${token}`
-//         },
-       
-//     })
-//     .then(res => res.json())
-//     .then(data => data)
-// }
-
 export const checkToken = (token) => {
     return fetch(`${BASE_URL}/users/me`, {
       method: 'GET',

@@ -28,12 +28,12 @@ function EditProfilePopup(props) {
       onClose={props.onClose}
       onSubmit={handleSubmit}
       isDisabled={!isValid}
-      onClick = {props.onClick}
+      onClick={props.onClick}
     >
       <>
         <input
           type="text"
-          id="name-input"          
+          id="name-input"
           name="name"
           value={values.name || ''}
           placeholder="Имя"

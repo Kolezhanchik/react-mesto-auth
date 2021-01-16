@@ -3,7 +3,7 @@ import PopupWithForm from './PopupWithForm';
 import { useCustomFormAndValidation } from '../hooks/useCustomForm';
 
 function EditAvatarPopup(props) {
-    
+
     const { values, handleChange, errors, isValid, resetForm } = useCustomFormAndValidation();
 
     useEffect(() => {
@@ -24,7 +24,7 @@ function EditAvatarPopup(props) {
             onClose={props.onClose}
             onSubmit={handleSubmit}
             isDisabled={!isValid}
-            onClick = {props.onClick}
+            onClick={props.onClick}
         >
             <>
                 <input

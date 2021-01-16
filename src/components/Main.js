@@ -29,17 +29,17 @@ function Main(props) {
             </button>
       </section>
       <section className="locations">
-        {props.isCardsLoading ? 
-          <p className="locations__loading">Загрузка...</p> 
-          :props.cards.map(card =>
-          <Card
+        {props.isCardsLoading ? (
+          <p className="locations__loading">Загрузка...</p>)
+          : props.cards.map(card =>
+          (<Card
             key={card._id}
             card={card}
             onImgClick={props.onImgClick}
             onCardLike={props.onCardLike}
             onCardDelete={props.onCardDelete}
-          />
-        )}
+          />)
+          )}
       </section>
     </main>
   );

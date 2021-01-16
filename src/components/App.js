@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import api from '../utils/api';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
-import { Route, Redirect, Switch, useHistory } from 'react-router-dom';
+import { Route, Switch, useHistory } from 'react-router-dom';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
@@ -15,6 +15,9 @@ import Login from './Login';
 import Register from './Register';
 import ProtectedRoute from './ProtectedRoute';
 import { checkToken } from '../utils/auth';
+import * as auth from '../utils/auth.js';
+import { useCustomFormAndValidation } from '../hooks/useCustomForm';
+
 
 function App() {
   const history = useHistory();
@@ -37,7 +40,7 @@ function App() {
   const [tooltipMessage, setTooltipMessage] = useState('');
   const [tooltipType, setTooltipType] = useState('');
   const [currentUserEmail, setCurrentUserEmail] = useState('');
-
+  const { values, handleChange, errors, isValid, resetForm } = useCustomFormAndValidation();
   useEffect(() => {
     setIsCardsLoading(true);
     api.getInitialCards()
@@ -72,7 +75,7 @@ function App() {
   }, []);
 
   // popup closing by overlay
-  function handleClick(event) {
+  function handleOverlayClick(event) {
     if (event.target === event.currentTarget) {
       closeAllPopups();
     }
@@ -175,13 +178,8 @@ function App() {
       });
   }
 
-  function handleLogin() {
-    setLoggedIn(true);
-  }
-
   function handleLogOut() {
     setLoggedIn(false);
-    console.log(loggedIn);
     localStorage.removeItem('jwt');
     history.push('/sign-in');
   }
@@ -208,7 +206,42 @@ function App() {
     if (token) {
       handleTokenCheck();
     }
-  }, [loggedIn]);
+  }, [handleTokenCheck]);
+
+  function handleLogin(event) {
+    event.preventDefault();
+    if (!values.email || !values.password) {
+      return;
+    }
+    auth.authorize(values)
+      .then((data) => {
+        if (data) {
+          setLoggedIn(true);
+          history.push('/');
+        }
+      })
+      .catch(err => console.log(err));
+  }
+
+  function handleRegister(event) {
+    event.preventDefault();
+    auth.register(values)
+        .then((res) => {
+            if (res) {
+              handleTooltipOpen();
+              setTooltipMessage('Вы успешно зарегистрировались!');
+              setTooltipType('positive');
+                history.push('/sign-in');
+            }
+            else {
+              setTooltipMessage('Что-то пошло не так! Попробуйте ещё раз.');
+              setTooltipType('negative');
+                handleTooltipOpen();
+            }
+        });
+    resetForm();
+}
+
 
   return (
     <CurrentUserContext.Provider value={currentUser} >
@@ -223,14 +256,22 @@ function App() {
             onTooltipOpen={handleTooltipOpen}
             message={setTooltipMessage}
             type={setTooltipType}
+            handleRegister={handleRegister}
+            values={values}
+            handleChange ={handleChange}
+            errors= {errors} 
+            isValid = {isValid} 
+            resetForm ={resetForm}
           />
         </Route>
         <Route path="/sign-in">
           <Login
-            onTooltipOpen={handleTooltipOpen}
-            message={setTooltipMessage}
-            type={setTooltipType}
             handleLogin={handleLogin}
+            values={values}
+            handleChange ={handleChange}
+            errors= {errors} 
+            isValid = {isValid} 
+            resetForm ={resetForm}
           />
         </Route>
         <ProtectedRoute
@@ -250,55 +291,54 @@ function App() {
       </Switch>
       <Footer />
       {
-        isEditProfilePopupOpen && <EditProfilePopup
+        <EditProfilePopup
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}
           onUpdateUser={handleUpdateUser}
-          onClick={handleClick}
+          onClick={handleOverlayClick}
           isUserSaving={isUserSaving}
         />
       }
       {
-        isEditAvatarPopupOpen && <EditAvatarPopup
+        <EditAvatarPopup
           isOpen={isEditAvatarPopupOpen}
           onClose={closeAllPopups}
           onUpdateAvatar={handleUpdateAvatar}
-          onClick={handleClick}
+          onClick={handleOverlayClick}
         />
       }
       {
-        isAddPlacePopupOpen && <AddPlacePopup
+        <AddPlacePopup
           isOpen={isAddPlacePopupOpen}
           onClose={closeAllPopups}
           onAddPlace={handleAddPlaceSubmit}
-          onClick={handleClick}
+          onClick={handleOverlayClick}
           isPlaceAdding={isPlaceAdding}
         />
       }
       {
-        isDelCardPopupOpen && <DeleteCardPopup
+        <DeleteCardPopup
           isOpen={isDelCardPopupOpen}
           onClose={closeAllPopups}
           handleSubmit={handleCardDelete}
-          onClick={handleClick}
+          onClick={handleOverlayClick}
           isCardDeleting={isCardDeleting}
         />
       }
       {
-        isCardPopupOpen && <ImagePopup
+        <ImagePopup
           card={selectedCard}
           isOpen={isCardPopupOpen}
           onClose={closeAllPopups}
-          onClick={handleClick}
+          onClick={handleOverlayClick}
         />
       }
       {
-        isInfoTooltipPopupOpen &&
         <InfoTooltip
           type={tooltipType}
           isOpen={isInfoTooltipPopupOpen}
           onClose={closeAllPopups}
-          onClick={handleClick}
+          onClick={handleOverlayClick}
           message={tooltipMessage}
         />
       }

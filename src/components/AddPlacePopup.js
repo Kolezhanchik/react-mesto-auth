@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import PopupWithForm from './PopupWithForm';
 import { useCustomFormAndValidation } from '../hooks/useCustomForm';
 
@@ -23,7 +23,7 @@ function AddPlacePopup(props) {
             onClose={props.onClose}
             onSubmit={handleSubmit}
             isDisabled={!isValid}
-            onClick = {props.onClick}
+            onClick={props.onClick}
         >
             <>
                 <input
@@ -36,7 +36,7 @@ function AddPlacePopup(props) {
                     maxLength="30"
                     className="popup__text popup__text_type_location-name"
                     value={values.name || ''}
-                    onChange={handleChange}                    
+                    onChange={handleChange}
                 />
                 <span id="location-name-input-error"
                     className="popup__text-error">{errors.name || ''}</span>

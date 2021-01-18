@@ -1,7 +1,16 @@
 import React from 'react';
 import MainPageForm from './MainPageForm';
+import { useCustomFormAndValidation } from '../hooks/useCustomForm';
+
 
 function Register(props) {
+
+    const { values, handleChange, errors, isValid, resetForm } = useCustomFormAndValidation();
+
+    function handleSubmit(event) {
+        event.preventDefault();
+        props.handleRegister(values, resetForm);        
+    }
 
     return (
         <div className="content">
@@ -9,8 +18,8 @@ function Register(props) {
                 className={'register'}
                 title="Регистрация"
                 btnText="Зарегистрироваться"
-                onSubmit={props.handleRegister}
-                isDisabled={props.isValid}
+                onSubmit={handleSubmit}
+                isDisabled={isValid}
                 text="Уже зарегистрированы?"
                 linkText='Войти'
             >
@@ -20,26 +29,26 @@ function Register(props) {
                         id="email"
                         pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$"
                         name="email"
-                        value={props.values.email || ''}
+                        value={values.email || ''}
                         placeholder="Email"
-                        onChange={props.handleChange}
+                        onChange={handleChange}
                         className="form-auth__input form-auth__input_type_email"
                         required
                         minLength="2"
                         maxLength="70" />
-                    <span id="email-input-error" className="form-auth__input-error">{props.errors.email || ''}</span>
+                    <span id="email-input-error" className="form-auth__input-error">{errors.email || ''}</span>
                     <input
                         type="password"
                         id="pass"
                         name="password"
-                        onChange={props.handleChange}
+                        onChange={handleChange}
                         placeholder="Пароль"
                         className="form-auth__input form-auth__input_type_password"
-                        value={props.values.password || ""}
+                        value={values.password || ""}
                         required
                         minLength="5"
                         maxLength="20" />
-                    <span id="password-input-error" className="form-auth__input-error">{props.errors.password || ''}</span>
+                    <span id="password-input-error" className="form-auth__input-error">{errors.password || ''}</span>
                 </>
             </MainPageForm>
 

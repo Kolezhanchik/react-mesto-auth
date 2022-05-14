@@ -1,19 +1,19 @@
-# Место
-## Учебный проект выполненный в рамках обучения Яндекс.Практикум/фронтенд-разработчик
-## Четырнадцатый спринт, проект развернут на реакте 
-Проект-профайл путешественника. Пользователю дается возможность добавлять и удалять, отмечать понравившиеся и увеличивать фотографии. Возможность редактировать данные профайла. Настроена валидация форм, а так же роутинг. Разделены возможности зарегистрированных и не зарегистрированных пользователей.
+# Location
+## A training project done as part of the Yandex.Practicum/frontend developer training
+## Fourteenth sprint, project  react.js 
+Traveler's Profile project. The user has options to add and delete, mark the photos he likes and enlarge them. Ability to edit the profile data. Configured validation forms, as well as routing. Divided opportunities for registered and unregistered users.
 
-В проекте использованы такие технологии как:
+The project uses technologies such as:
 
-1. Flexbox. 
+Flexbox. 
 2. CSS3(Flexbox, Animation/transformation).
 3. HTML5
-4. media запросы.
+4. media queries.
 5. React.js 
-6. Хуки
-7. Функциональные компоненты
-8. Запросы к API/hолучение данных с сервера
+6. Hooks
+7. Functional Components
+8. API queries/receiving data from the server
 9. JS
 10. OOP
 
-* [Ссылка на веб-страницу проекта](https://kolenhen.github.io/react-mesto-auth)
+* [Link to the project web page](https://Kolezhanchik.github.io/react-mesto-auth)
